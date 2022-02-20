@@ -66,28 +66,73 @@ void One(Polyclinic* Obj,int amount)
     }
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void Two(Polyclinic* Obj,int amount)
+int getSpec()
 {
-    cin.get();
-    cout << "ФИО: ";
-    Obj[amount].FIO=new char[40];
-    cin.getline(Obj[amount].FIO, 40);
-
-    cout << "Специальность(1-терапевт, 2-кардиолог, 3-стоматолог): ";
-    cin >> Obj[amount].specialty;
-    while(Obj[amount].specialty<=0 or Obj[amount].specialty>3)
+    while (true)
     {
         cout << "Специальность(1-терапевт, 2-кардиолог, 3-стоматолог): ";
-        cin >> Obj[amount].specialty;
-    }
+        int a;
+        cin >> a;
 
-    cout << "Квалификация(0-высшая, 1-первая, 2-вторая): ";
-    cin >> Obj[amount].qualification;
-    while(Obj[amount].qualification<0 or Obj[amount].qualification>2)
+        if (cin.fail() or (a < 1) or (a > 3))
+        {
+            cin.clear();
+            cin.ignore(32767,'\n');
+        }
+        else
+            return a;
+    }
+}
+
+int getQual()
+{
+    while (true)
     {
         cout << "Квалификация(0-высшая, 1-первая, 2-вторая): ";
-        cin >> Obj[amount].qualification;
+        int a;
+        cin >> a;
+
+        if (cin.fail() or (a < 0) or (a > 2))
+        {
+            cin.clear();
+            cin.ignore(32767,'\n');
+        }
+        else
+            return a;
     }
+}
+
+char * getFIO(){
+    int i;
+    char *str;
+    str = new char[40];
+    char *Obj = new char[40];
+    do{
+        cout<<"ФИО: ";
+        cin>>str;
+        for(i=0;str[i];i++)
+            if((str[i]>='0' and str[i]<='9' and str[i]) or (str[i]<='/' and str[i]>='!') or (str[i]<='@' and str[i]>=':') or (str[i]<='`' and str[i]>='[') or (str[i]<='~' and str[i]>='{'))
+                break;
+        if(str[i])
+            cout<<"Зачем вы ввели не буквы..."<<endl<<"Повторите ввод!!!"<<endl;
+    }while(str[i]);
+
+    for (i = 0; str[i]; i++){
+        Obj[i]+=str[i];
+    }
+    return Obj;
+}
+
+void Two(Polyclinic* Obj,int amount)
+{
+    Obj[amount].FIO=new char[40];
+    Obj[amount].FIO = getFIO();
+
+    Obj[amount].specialty = getSpec();
+    cin.get();
+
+    Obj[amount].qualification = getQual();
+    cin.get();
 
     cout << endl;
 }
